@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "261bb3ce-117b-4455-9e03-96d8fb7a13e4",
+		"name": "EmployeeNewHire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43249942",
+		"_collection_link": "https://ashwanikumar-8009145.postman.co/workspace/Ashwani-Kumar's-Workspace~06a12e0d-04a4-4d00-80af-d903ddfd786a/collection/43249942-261bb3ce-117b-4455-9e03-96d8fb7a13e4?action=share&source=collection_link&creator=43249942"
+	},
+	"item": [
+		{
+			"name": "GetNewHire",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set updated-min to 1 day ago\r",
+							"const date = new Date();\r",
+							"date.setDate(date.getDate() - 1);\r",
+							"pm.environment.set(\"updated_min\", date.toISOString());\r",
+							"\r",
+							"// Encode Basic Auth credentials\r",
+							"const username = pm.environment.get(\"username\");\r",
+							"const password = pm.environment.get(\"password\");\r",
+							"const encodedCredentials = btoa(`${username}:${password}`);\r",
+							"\r",
+							"// Set Authorization header\r",
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"    value: `Basic ${encodedCredentials}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const xml2js = require('xml2js'); // Importing xml2js library\r",
+							"const parser = new xml2js.Parser({ explicitArray: false });\r",
+							"\r",
+							"parser.parseString(pm.response.text(), function (err, result) {\r",
+							"    // ✅ Test: Response status is 200\r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    // ✅ Test: XML parsed successfully\r",
+							"    pm.test(\"Parsed XML successfully\", function () {\r",
+							"        pm.expect(err).to.eql(null);\r",
+							"    });\r",
+							"\r",
+							"    // ✅ Test: Subtitle is 'NewHire'\r",
+							"    pm.test(\"Subtitle is 'NewHire'\", function () {\r",
+							"        const subtitle = result.feed.subtitle._; // Accessing the subtitle text\r",
+							"        pm.expect(subtitle).to.eql(\"NewHire\");\r",
+							"    });\r",
+							"\r",
+							"    // ✅ Optional: Extract a value and store it\r",
+							"    // Example: const employeeId = result.feed.entry.id;\r",
+							"    // pm.environment.set(\"employee_id\", employeeId);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Welcome@111222333",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Integration.User",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/hcmRestApi/atomservlet/employee/newhire?updated-min={{updated_min}}&base_url={{base-url}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"hcmRestApi",
+						"atomservlet",
+						"employee",
+						"newhire"
+					],
+					"query": [
+						{
+							"key": "updated-min",
+							"value": "{{updated_min}}"
+						},
+						{
+							"key": "base_url",
+							"value": "{{base-url}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Emp Assignment",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set updated-min to 1 day ago\r",
+							"const date = new Date();\r",
+							"date.setDate(date.getDate() - 1);\r",
+							"pm.environment.set(\"updated_min\", date.toISOString());\r",
+							"\r",
+							"// Encode Basic Auth credentials\r",
+							"const username = pm.environment.get(\"username\");\r",
+							"const password = pm.environment.get(\"password\");\r",
+							"const encodedCredentials = btoa(`${username}:${password}`);\r",
+							"\r",
+							"// Set Authorization header\r",
+							"pm.request.headers.add({\r",
+							"    key: 'Authorization',\r",
+							"    value: `Basic ${encodedCredentials}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const xml2js = require('xml2js'); // Importing xml2js library\r",
+							"const parser = new xml2js.Parser({ explicitArray: false });\r",
+							"\r",
+							"parser.parseString(pm.response.text(), function (err, result) {\r",
+							"    // ✅ Test: Response status is 200\r",
+							"    pm.test(\"Status code is 200\", function () {\r",
+							"        pm.response.to.have.status(200);\r",
+							"    });\r",
+							"\r",
+							"    // ✅ Test: XML parsed successfully\r",
+							"    pm.test(\"Parsed XML successfully\", function () {\r",
+							"        pm.expect(err).to.eql(null);\r",
+							"    });\r",
+							"     pm.test(\"Subtitle is 'EmployeeAssignment'\", function () {\r",
+							"        const subtitle = result.feed.subtitle._; // Accessing the subtitle text\r",
+							"        pm.expect(subtitle).to.eql(\"EmployeeAssignment\");\r",
+							"    });\r",
+							"    pm.test(\"title is 'Person's Assignment Changed'\", function () {\r",
+							"        const title = result.feed.title._; // Accessing the subtitle text\r",
+							"        pm.expect(title).to.eql(\"Person's Assignment Changed\");\r",
+							"    });\r",
+							"    \r",
+							"    // ✅ Optional: Extract a value and store it\r",
+							"    // Example: const employeeId = result.feed.entry.id;\r",
+							"    // pm.environment.set(\"employee_id\", employeeId);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Welcome@111222333",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Integration.User",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/hcmRestApi/atomservlet/employee/empassignment?updated-min={{updated_min}}&base_url={{base-url}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"hcmRestApi",
+						"atomservlet",
+						"employee",
+						"empassignment"
+					],
+					"query": [
+						{
+							"key": "updated-min",
+							"value": "{{updated_min}}"
+						},
+						{
+							"key": "base_url",
+							"value": "{{base-url}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
