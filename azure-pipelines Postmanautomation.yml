@@ -1,30 +1,20 @@
-# azure-pipelines.yml
 trigger:
-  branches:
-    include:
-      - main   # Runs pipeline on commits to main branch
+- main
 
 pool:
   vmImage: 'windows-latest'
 
+variables:
+- group: 'Postman automation azure key'
+
 steps:
-# 1. Install Postman CLI
-- powershell: |
-    Invoke-WebRequest -Uri "https://dl-cli.pstmn.io/download/latest/win64" -OutFile "postman-cli.zip"
-    Expand-Archive -Path "postman-cli.zip" -DestinationPath "C:\postman-cli"
-    $env:PATH += ";C:\postman-cli"
+- script: |
+    powershell.exe -NoProfile -InputFormat None -ExecutionPolicy AllSigned -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://dl-cli.pstmn.io/install/win64.ps1'))"
   displayName: 'Install Postman CLI'
 
-# 2. Authenticate Postman CLI using API Key
-- script: |
-    postman login --with-api-key $(POSTMAN_API_KEY)
-  displayName: 'Authenticate Postman CLI'
-
-# 3. Run Postman Collection for DemoQA and DemoDev environments
-- script: |
-    echo "Running Postman Collection for DemoQA..."
-    postman collection run "EmployeeNewHire" --environment "DemoQA"
-    
-    echo "Running Postman Collection for DemoDev..."
-    postman collection run "EmployeeNewHire" --environment "DemoDev"
-  displayName: 'Run Postman Collections'
+- task: CmdLine@2
+  displayName: 'Run automated API tests using Postman CLI'
+  inputs:
+    script: |
+      postman login --with-api-key $(Postman Automation Key)
+      postman collection run "EmployeeNewHire" --environment "DemoDev"
